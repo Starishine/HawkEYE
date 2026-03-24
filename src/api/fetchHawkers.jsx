@@ -34,7 +34,8 @@ export default async function fetchHawkers() {
             address,
             postalCode: props.ADDRESSPOSTALCODE,
             lat,
-            lng
+            lng,
+            status: props.STATUS
         };
     });
 }
