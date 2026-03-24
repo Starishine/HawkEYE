@@ -15,7 +15,7 @@ import { useMemo } from 'react'
 import './HawkerMarkers.css'
 
 // Status → badge colour mapping
-const STATUS_COLORS = {
+export const STATUS_COLORS = {
     'Existing': '#16a34a', // green
     'Existing (new)': '#0284c7', // blue
     'Existing (replacement)': '#7c3aed', // purple

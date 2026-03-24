@@ -7,7 +7,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import './MapView.css'
-import HawkerMarker from '../Markers/HawkerMarkers'
+import HawkerMarker, { STATUS_COLORS } from '../Markers/HawkerMarkers'
 import { useEffect } from 'react'
 
 const SG_BOUNDS = L.latLngBounds(
@@ -26,13 +26,34 @@ function MapFlyTo({ hawkers, selectedId, onSelect }) {
     const map = useMap()
 
     useEffect(() => {
-        if (!selectedId) return
+        if (!selectedId) {
+            return
+        }
+        // Find the selected hawker centre's coordinates and fly there
         const hawker = hawkers.find(h => String(h.id) === String(selectedId))
-        if (!hawker) return
+        if (!hawker) {
+            return
+        }
         map.flyTo([hawker.lat, hawker.lng], 15, { duration: 0.8 })
     }, [selectedId, hawkers, map])
 
     return null
+}
+
+function MapLegend() {
+    return (
+        <aside className="map-legend" aria-label="Hawker status legend">
+            <p className="map-legend__title">Status</p>
+            <ul className="map-legend__list">
+                {Object.entries(STATUS_COLORS).map(([status, color]) => (
+                    <li key={status} className="map-legend__item">
+                        <span className="map-legend__swatch" style={{ '--legend-color': color }} />
+                        <span className="map-legend__label">{status}</span>
+                    </li>
+                ))}
+            </ul>
+        </aside>
+    )
 }
 
 export default function MapView({ hawkers, selectedId, onSelect }) {
@@ -64,6 +85,8 @@ export default function MapView({ hawkers, selectedId, onSelect }) {
 
                 <MapFlyTo hawkers={hawkers} selectedId={selectedId} onSelect={onSelect} />
             </MapContainer>
+
+            <MapLegend />
         </div>
     )
 }
