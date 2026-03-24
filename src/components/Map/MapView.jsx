@@ -3,12 +3,13 @@
  * It displays the map, handles user interactions, and manages the state of the map view.
 */
 
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import './MapView.css'
 import HawkerMarker, { STATUS_COLORS } from '../Markers/HawkerMarkers'
-import { useEffect } from 'react'
+import UserLocationMarker, { FlyToUserLocation } from '../Markers/UserLocation'
+import { useEffect, useState } from 'react'
 
 const SG_BOUNDS = L.latLngBounds(
     L.latLng(1.144, 103.535), // Southwest corner
@@ -22,7 +23,7 @@ const SG_ZOOM = 11
  * Inner component that flies the map to a selected hawker centre.
  * Must be inside <MapContainer> to access the map instance.
  */
-function MapFlyTo({ hawkers, selectedId, onSelect }) {
+function MapFlyTo({ hawkers, selectedId }) {
     const map = useMap()
 
     useEffect(() => {
@@ -57,8 +58,56 @@ function MapLegend() {
 }
 
 export default function MapView({ hawkers, selectedId, onSelect }) {
+    const [userPosition, setUserPosition] = useState(null)
+    const [isLocating, setIsLocating] = useState(false)
+    const [locationError, setLocationError] = useState('')
+
+    function handleLocateUser() {
+        if (!navigator.geolocation) {
+            setLocationError('Geolocation is not supported by this browser.')
+            return
+        }
+
+        setIsLocating(true)
+        setLocationError('')
+
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                setUserPosition([position.coords.latitude, position.coords.longitude])
+                setIsLocating(false)
+            },
+            error => {
+                const locationErrors = {
+                    [error.PERMISSION_DENIED]: 'Location access was denied.',
+                    [error.POSITION_UNAVAILABLE]: 'Location is unavailable right now.',
+                    [error.TIMEOUT]: 'Location request timed out. Try again.',
+                }
+
+                setLocationError(locationErrors[error.code] ?? 'Unable to retrieve your location.')
+                setIsLocating(false)
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 12000,
+                maximumAge: 0,
+            }
+        )
+    }
+
     return (
         <div className="map-wrapper">
+            <div className="map-locate-panel">
+                <button
+                    type="button"
+                    className="map-locate-button"
+                    onClick={handleLocateUser}
+                    disabled={isLocating}
+                >
+                    {isLocating ? 'Locating...' : 'Find My Location'}
+                </button>
+                {locationError && <p className="map-locate-error">{locationError}</p>}
+            </div>
+
             <MapContainer
                 center={SG_CENTER}
                 zoom={SG_ZOOM}
@@ -83,7 +132,9 @@ export default function MapView({ hawkers, selectedId, onSelect }) {
                     />
                 ))}
 
-                <MapFlyTo hawkers={hawkers} selectedId={selectedId} onSelect={onSelect} />
+                <MapFlyTo hawkers={hawkers} selectedId={selectedId} />
+                <FlyToUserLocation position={userPosition} />
+                <UserLocationMarker position={userPosition} />
             </MapContainer>
 
             <MapLegend />
