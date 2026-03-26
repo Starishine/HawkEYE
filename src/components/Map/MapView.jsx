@@ -17,7 +17,7 @@ const SG_BOUNDS = L.latLngBounds(
 )
 
 const SG_CENTER = [1.3521, 103.8198] // Approximate center of Singapore
-const SG_ZOOM = 11
+const SG_ZOOM = 15
 
 /**
  * Inner component that flies the map to a selected hawker centre.

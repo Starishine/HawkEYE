@@ -2,6 +2,7 @@ import { useState, useEffect, use } from 'react'
 import fetchHawkers from './api/fetchHawkers'
 import './App.css'
 import MapView from './components/Map/MapView'
+import SearchHawkers from './components/Search/SearchHawkers'
 
 function App() {
   const [hawkers, setHawkers] = useState([])
@@ -33,14 +34,20 @@ function App() {
         <span className="app-count">{hawkers.length} centres</span>
       </header>
 
-      <main className="app-main">
+      <div className="app-body">
+        <SearchHawkers
+          hawkers={hawkers}
+          selectedId={selectedHawkerId}
+          onSelect={setSelectedHawkerId}
+        />
         <MapView
           hawkers={hawkers}
           selectedId={selectedHawkerId}
           onSelect={setSelectedHawkerId}
         />
-      </main>
+      </div>
     </div>
+
   )
 }
 
