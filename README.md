@@ -22,7 +22,6 @@ Data is loaded locally from bundled files:
 - React 19
 - Vite 8
 - Leaflet + React-Leaflet
-- ESLint 9
 
 ## Prerequisites
 
@@ -61,18 +60,11 @@ Preview the production build locally:
 npm run preview
 ```
 
-## Lint
-
-```bash
-npm run lint
-```
-
 ## Available Scripts
 
 - `npm run dev`: Start Vite dev server
 - `npm run build`: Create production build
 - `npm run preview`: Preview production build
-- `npm run lint`: Run ESLint checks
 
 ## How to Use
 
@@ -108,3 +100,4 @@ src/
 - Geolocation requires browser permission.
 - If location access is denied or unavailable, the app shows an error message in the map panel.
 - Map tiles are provided by OpenStreetMap.
+- List of Postal Districts obtained frm https://www.propertygiant.com/resource/singapore-postal-districts-map
