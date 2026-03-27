@@ -1,16 +1,110 @@
-# React + Vite
+# HawkEYE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interactive map of Singapore hawker centres built with React, Vite, and Leaflet.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+HawkEYE displays hawker centres on a map and lets users:
 
-## React Compiler
+- search by hawker centre name
+- filter by region
+- view status-based marker colors and legend
+- click markers to see address and status details
+- use browser geolocation to jump to current location
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Data is loaded locally from bundled files:
 
-## Expanding the ESLint configuration
+- `src/data/hawkers.json`
+- `src/data/postal_region.csv`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+- React 19
+- Vite 8
+- Leaflet + React-Leaflet
+- ESLint 9
+
+## Prerequisites
+
+- Node.js 18+ (Node.js 20 LTS recommended)
+- npm (comes with Node.js)
+
+## Setup
+
+1. Clone or download this repository.
+2. Open the project folder.
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+## Run Locally
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Then open the local URL shown in your terminal (usually `http://localhost:5173`).
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## Lint
+
+```bash
+npm run lint
+```
+
+## Available Scripts
+
+- `npm run dev`: Start Vite dev server
+- `npm run build`: Create production build
+- `npm run preview`: Preview production build
+- `npm run lint`: Run ESLint checks
+
+## How to Use
+
+1. Open the app.
+2. Click the search icon in the top header.
+3. Search hawker centres by name.
+4. Filter by region from the dropdown.
+5. Click a search result or map marker to focus a hawker centre.
+6. Use **Find My Location** to show and fly to your current location.
+
+## Project Structure
+
+```text
+src/
+	api/
+		fetchHawkers.jsx        # parse hawker data + postal-to-region mapping
+	components/
+		Map/
+			MapView.jsx           # main map container + legend + region/user fly-to
+		Markers/
+			HawkerMarkers.jsx     # hawker marker + popup + status colors
+			UserLocation.jsx      # user location marker/fly behavior
+		Search/
+			SearchHawkers.jsx     # side panel search + region filter
+	data/
+		hawkers.json            # hawker geo data
+		postal_region.csv       # postal prefix to region map
+	App.jsx                   # app state + layout + filtering
+```
+
+## Notes
+
+- Geolocation requires browser permission.
+- If location access is denied or unavailable, the app shows an error message in the map panel.
+- Map tiles are provided by OpenStreetMap.
