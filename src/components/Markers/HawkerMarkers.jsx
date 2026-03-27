@@ -47,6 +47,12 @@ function createIcon(isSelected, color) {
     })
 }
 
+/**
+ * 
+ * Main component that renders a Leaflet marker for a hawker centre, with a popup showing its name, address, postal code, and status.
+ * The marker icon color is determined by the hawker's status, and a different style is applied if it's selected.
+ * Clicking the marker triggers the onSelect callback with the hawker's ID.
+ */
 export default function HawkerMarker({ hawker, isSelected, onSelect }) {
     const icon = useMemo(
         () => createIcon(isSelected, getStatusColor(hawker.status)),

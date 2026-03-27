@@ -1,7 +1,6 @@
 .map-wrapper {
     flex: 1;
     min-height: 0;
-    /* critical — lets flexbox shrink this below content height */
     position: relative;
 }
 

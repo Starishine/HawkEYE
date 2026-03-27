@@ -69,7 +69,7 @@ export default async function fetchHawkers() {
             name: props.NAME,
             address,
             postalCode: props.ADDRESSPOSTALCODE,
-            region: getRegionByPostalCode(props.ADDRESSPOSTALCODE),
+            region: getRegionByPostalCode(props.ADDRESSPOSTALCODE), // derive region 
             lat,
             lng,
             status: props.STATUS

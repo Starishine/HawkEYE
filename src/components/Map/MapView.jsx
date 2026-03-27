@@ -71,6 +71,9 @@ function FlyToRegion({ hawkers, selectedRegion }) {
     return null
 }
 
+/**
+ * Renders the map legend.
+ */
 function MapLegend() {
     return (
         <aside className="map-legend" aria-label="Hawker status legend">
@@ -87,6 +90,11 @@ function MapLegend() {
     )
 }
 
+/**
+ * 
+ * Main map view component that renders the Leaflet map, hawker markers, user location, and handles interactions.
+ * 
+ */
 export default function MapView({ hawkers, selectedId, onSelect, selectedRegion }) {
     const [userPosition, setUserPosition] = useState(null)
     const [isLocating, setIsLocating] = useState(false)

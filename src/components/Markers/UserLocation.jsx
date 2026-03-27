@@ -1,3 +1,9 @@
+/**
+ * Component for displaying the user's current location on the map as a marker, and optionally flying to that location when it changes.
+ * Uses Leaflet's divIcon to create a custom marker style.
+ * The FlyToUserLocation component listens for changes in the user's position and animates the map to that location.
+ */
+
 import { Marker, Popup, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { useEffect, useMemo } from 'react'
@@ -11,7 +17,7 @@ function createUserLocationIcon() {
         popupAnchor: [0, -10],
     })
 }
-
+// FLy to user location when it changes
 export function FlyToUserLocation({ position }) {
     const map = useMap()
 
@@ -26,6 +32,7 @@ export function FlyToUserLocation({ position }) {
     return null
 }
 
+// Simple marker component to show the user's location with a popup
 export default function UserLocationMarker({ position }) {
     const icon = useMemo(() => createUserLocationIcon(), [])
 
