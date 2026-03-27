@@ -60,6 +60,7 @@ function App() {
           hawkers={visibleHawkers}
           selectedId={selectedHawkerId}
           onSelect={setSelectedHawkerId}
+          selectedRegion={selectedRegion}
         />
       </main>
 

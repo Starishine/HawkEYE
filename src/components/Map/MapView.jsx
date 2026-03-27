@@ -41,6 +41,36 @@ function MapFlyTo({ hawkers, selectedId }) {
     return null
 }
 
+/**
+ * Inner component that flies the map to fit a selected region.
+ * Must be inside <MapContainer> to access the map instance.
+ */
+function FlyToRegion({ hawkers, selectedRegion }) {
+    const map = useMap()
+
+    useEffect(() => {
+        if (!selectedRegion || selectedRegion === 'All') {
+            return
+        }
+
+        // Filter hawkers in the selected region
+        const regionHawkers = hawkers.filter(h => h.region === selectedRegion)
+        if (regionHawkers.length === 0) {
+            return
+        }
+
+        // Calculate bounds from all hawkers in the region
+        const bounds = L.latLngBounds(
+            regionHawkers.map(h => [h.lat, h.lng])
+        )
+
+        // Fit map to the bounds with padding
+        map.fitBounds(bounds, { padding: [100, 100], duration: 0.8 })
+    }, [selectedRegion, hawkers, map])
+
+    return null
+}
+
 function MapLegend() {
     return (
         <aside className="map-legend" aria-label="Hawker status legend">
@@ -57,7 +87,7 @@ function MapLegend() {
     )
 }
 
-export default function MapView({ hawkers, selectedId, onSelect }) {
+export default function MapView({ hawkers, selectedId, onSelect, selectedRegion }) {
     const [userPosition, setUserPosition] = useState(null)
     const [isLocating, setIsLocating] = useState(false)
     const [locationError, setLocationError] = useState('')
@@ -133,6 +163,7 @@ export default function MapView({ hawkers, selectedId, onSelect }) {
                 ))}
 
                 <MapFlyTo hawkers={hawkers} selectedId={selectedId} />
+                <FlyToRegion hawkers={hawkers} selectedRegion={selectedRegion} />
                 <FlyToUserLocation position={userPosition} />
                 <UserLocationMarker position={userPosition} />
             </MapContainer>
